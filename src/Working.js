@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 class Working extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -10,6 +11,7 @@ class Working extends Component {
   handleClick = () => {
     this.setState({ Working: !this.state.on });
   };
+  
   render() {
     const light = this.state.Working ? 'travaille' : 'pause';
     return (

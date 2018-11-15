@@ -1,43 +1,52 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import Working from "./Lamp";
+import Lamp from "./Lamp";
+import GenerateQuote from "./components/api/GenerateQuote"
+import DisplayQuote from "./components/api/DisplayQuote"
 
 
-import Quote from "./Quotes";
+
+const sampleQuote = {
+  quote: "test",
+  character:"rttt"
+}
 
 class App extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
-      working: false
+      // on peut mettre notre sampleEmployee par défaut
+      // afin d'avoir toujours un employé d'affiché
+      quote:  sampleQuote
     };
   }
 
-  isWorking = () => {
-    this.setState({ working: !this.state.working });
-    
-  };
+  getQuote() {
+    // Récupération de l'employé via fetch
+    fetch("https://thesimpsonsquoteapi.glitch.me/quotes?count=num")
+      .then(response  =>  response.json())
+      .then(data  => {
+        // Une fois les données récupérées, on va mettre à jour notre state avec les nouvelles données
+        this.setState({
+          quote:  data[0]
+        });
+    });
+}
+
+
+
+
 
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className={this.state.working ? "App-logo2" : "App-logo"} alt="logo" />
-          <h1 className="App-title">Simpsons Quotes</h1>
-        </header>
-
-  <Working on={this.state.working} />
-  <button onClick={this.isWorking}>
-  <h1>work</h1>
-  </button>
-
-
-        <Quote/>
-        
+        <Lamp on />
+        <Lamp />
+        <GenerateQuote selectQuote={() =>  this.getQuote()} />
+        <DisplayQuote quote={this.state.quote} />
       </div>
     );
-  }
+  };
 }
 
 export default App;
